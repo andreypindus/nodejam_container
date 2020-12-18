@@ -1,0 +1,6 @@
+[
+    {
+      "name": "notejam-container",
+      "imageUri": "145476053377.dkr.ecr.us-east-1.amazonaws.com/notejam:latest"
+    }
+  ]

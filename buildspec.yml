@@ -1,0 +1,21 @@
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR...
+      - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 145476053377.dkr.ecr.us-east-1.amazonaws.com
+      - aws s3 cp s3://docker-conn-token/docker.key .docker.key
+      - docker login -u andreypin --password-stdin < .docker.key
+      - rm .docker.key
+  build:
+    commands:
+      - echo Build started on `date`
+      - echo Building the Docker image...          
+      - docker build -t notejam .
+      - docker tag notejam:latest 145476053377.dkr.ecr.us-east-1.amazonaws.com/notejam:latest      
+  post_build:
+    commands:
+      - echo Build completed on `date`
+      - echo Pushing the Docker image...
+      - docker push 145476053377.dkr.ecr.us-east-1.amazonaws.com/notejam:latest
